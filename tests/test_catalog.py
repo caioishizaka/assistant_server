@@ -9,6 +9,7 @@ from assistant_server.modules.casa.catalog import (
     TIPOS_HUB,
     CadastroInvalido,
     carregar,
+    ler_yaml,
     montar,
 )
 
@@ -27,7 +28,7 @@ def cadastro(devices, groups=None, phrases=None):
 
 
 def carregar_texto(texto):
-    return montar(yaml.safe_load(texto))
+    return montar(ler_yaml(texto))
 
 
 def test_casa_yaml_carrega():
@@ -135,6 +136,17 @@ def test_todas_luzes_so_para_luz():
 def test_campo_desconhecido_falha():
     with pytest.raises(CadastroInvalido, match="campos desconhecidos"):
         carregar_texto(cadastro({1: {"tipo": "luz", "falado": "luz", "apelido": ["luz a"]}}))
+
+
+def test_on_off_ficam_texto_e_true_continua_booleano():
+    catalogo = carregar_texto(
+        "devices:\n"
+        "  1: {tipo: luz, falado: spots, plural: true, apelidos: [luz a]}\n"
+        "phrases:\n"
+        "  boa noite: {acao: off, alvo: 1}\n"
+        "  bom dia: {acao: on, alvo: 1}\n")
+    assert [f.acao for f in catalogo.frases] == ["off", "on"]
+    assert catalogo.equipamentos[1].plural is True
 
 
 def test_apelido_com_quantificador_falha():

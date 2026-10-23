@@ -7,6 +7,7 @@ Ids usados em grupo ou frase que não estão em `devices` (hoje o 35, "Cortinas 
 checados aqui: vêm do hub. `Catalogo.ids_do_hub` lista todos eles para a Fase 3.
 """
 
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -25,6 +26,23 @@ CHAVES_RAIZ = frozenset({"devices", "groups", "phrases"})
 
 class CadastroInvalido(ValueError):
     pass
+
+
+class _Carregador(yaml.SafeLoader):
+    """YAML 1.1 lê `on`/`off`/`yes`/`no` como booleano, e `acao: off` viraria False. Aqui só
+    `true`/`false` são booleanos."""
+
+
+_Carregador.yaml_implicit_resolvers = {
+    inicial: [(tag, regex) for tag, regex in resolvedores if tag != "tag:yaml.org,2002:bool"]
+    for inicial, resolvedores in yaml.SafeLoader.yaml_implicit_resolvers.items()
+}
+_Carregador.add_implicit_resolver(
+    "tag:yaml.org,2002:bool", re.compile(r"^(?:true|True|TRUE|false|False|FALSE)$"), list("tTfF"))
+
+
+def ler_yaml(texto: str):
+    return yaml.load(texto, Loader=_Carregador)
 
 
 @dataclass(frozen=True)
@@ -73,7 +91,7 @@ class Catalogo:
 
 
 def carregar(caminho: Path) -> Catalogo:
-    return montar(yaml.safe_load(caminho.read_text(encoding="utf-8")))
+    return montar(ler_yaml(caminho.read_text(encoding="utf-8")))
 
 
 def montar(bruto) -> Catalogo:
@@ -154,6 +172,7 @@ def _frases(bruto, grupos: dict[str, Grupo]) -> tuple[Frase, ...]:
     if not isinstance(bruto, dict):
         raise CadastroInvalido("phrases: precisa ser um mapa")
     frases = []
+    vistas = set()
     for texto, dados in bruto.items():
         origem = f"frase {texto!r}"
         _chaves(origem, dados, {"acao", "alvo"}, {"acao", "alvo"})
@@ -166,6 +185,9 @@ def _frases(bruto, grupos: dict[str, Grupo]) -> tuple[Frase, ...]:
         frase = normalizar(texto).tokens
         if not frase:
             raise CadastroInvalido(f"{origem}: a frase fica vazia depois da normalização")
+        if frase in vistas:
+            raise CadastroInvalido(f"{origem}: frase repetida depois da normalização")
+        vistas.add(frase)
         frases.append(Frase(frase, acao, alvo))
     return tuple(frases)
 

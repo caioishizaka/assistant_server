@@ -1,0 +1,51 @@
+# Tabela de PLAN.md, seção 5. Não alterar uma linha para um teste passar: se a gramática não dá o
+# resultado daqui, para e chama o Opus (PLAN.md, seção 9).
+# status: ok | not_identified. alvo: id de equipamento ou chave de grupo. ids: itens do grupo.
+
+- {frase: "acende a luz da sacada", status: ok, acao: "on", alvo: 4}
+- {frase: "acende a luz da sacada por favor", status: ok, acao: "on", alvo: 4}
+- {frase: "fecha a cortina 3", status: ok, acao: close, alvo: 38}
+- {frase: "fecha a cortina três", status: ok, acao: close, alvo: 38}
+- {frase: "abre a cortina oito", status: ok, acao: open, alvo: 43}
+- {frase: "fecha as cortinas do jantar", status: ok, acao: close, alvo: cortinas_jantar, ids: [35]}
+- {frase: "fecha todas as cortinas do jantar", status: ok, acao: close, alvo: cortinas_jantar, ids: [35]}
+- {frase: "fecha a cortina do jantar", status: not_identified}
+- {frase: "acende os spots da bancada", status: ok, acao: "on", alvo: 18}
+- {frase: "acende o box do banheiro", status: not_identified}
+- {frase: "acende o box do banheiro da suíte", status: ok, acao: "on", alvo: 24}
+- {frase: "abre a luz da sala", status: not_identified}
+- {frase: "liga a cortina 3", status: not_identified}
+- {frase: "apaga as luzes da sala de estar", status: ok, acao: "off", alvo: luzes_sala_estar, ids: [4, 14, 17, 28, 31, 32]}
+- {frase: "apaga todas as luzes da cozinha", status: ok, acao: "off", alvo: luzes_cozinha, ids: [6, 7, 8, 15]}
+- {frase: "apaga as luzes do banheiro da suíte", status: ok, acao: "off", alvo: luzes_banheiro_suite, ids: [22, 23, 24]}
+- {frase: "apaga as luzes do banheiro", status: not_identified}
+- {frase: "apaga as luzes", status: not_identified}
+- {frase: "apaga tudo", status: ok, acao: "off", alvo: todas_luzes}
+- {frase: "apaga todas as luzes", status: ok, acao: "off", alvo: todas_luzes}
+- {frase: "apaga as luzes da casa", status: ok, acao: "off", alvo: todas_luzes}
+- {frase: "apaga todas as luzes da sala", status: not_identified}
+- {frase: "acende todas as luzes do jardim", status: not_identified}
+- {frase: "acende todas as luzes", status: ok, acao: "on", alvo: todas_luzes}
+- {frase: "fecha todas as cortinas", status: ok, acao: close, alvo: todas_cortinas}
+- {frase: "abre as cortinas da casa", status: ok, acao: open, alvo: todas_cortinas}
+- {frase: "fecha tudo", status: ok, acao: close, alvo: todas_cortinas}
+- {frase: "fecha todas as persianas", status: not_identified}
+- {frase: "fecha a persiana", status: not_identified}
+- {frase: "fecha a persiana do quarto", status: ok, acao: close, alvo: 46}
+- {frase: "acende o spot da sala", status: not_identified}
+- {frase: "acender a luz do quarto", status: ok, acao: "on", alvo: 33}
+- {frase: "apaga a luz da suíte", status: ok, acao: "off", alvo: 33}
+- {frase: "apaga todas as luzes do quarto", status: ok, acao: "off", alvo: luzes_quarto, ids: [33, 34]}
+- {frase: "acende a luz da pia do banheiro social", status: ok, acao: "on", alvo: 9}
+- {frase: "acende a luz da pia da cozinha", status: ok, acao: "on", alvo: 8}
+- {frase: "acende a luz da pia do banheiro", status: not_identified}
+- {frase: "acende a luz da mesa", status: not_identified}
+- {frase: "acende a luz da mesa do escritório", status: not_identified}
+- {frase: "acende a mesa inferior", status: ok, acao: "on", alvo: 29}
+- {frase: "apaga as luzes do corredor", status: ok, acao: "off", alvo: 1}
+- {frase: "acende a luz da sacada e da copa", status: not_identified}
+- {frase: "abre e fecha a cortina 3", status: not_identified}
+- {frase: "acende", status: not_identified}
+- {frase: "bom dia", status: not_identified}
+- {frase: "acende a luz da sacadas", status: ok, acao: "on", alvo: 4}
+- {frase: "acende a luz da escada", status: not_identified}

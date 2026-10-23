@@ -333,9 +333,9 @@ devices:
   4:  { tipo: luz, falado: "luz da sacada", apelidos: ["luz sacada"] }
   14: { tipo: luz, falado: "spot da sala de estar", genero: m, apelidos: ["spot sala estar"] }
   17: { tipo: luz, falado: "spot da decoração", genero: m, apelidos: ["spot decoracao", "luz decoracao"] }
-  28: { tipo: luz, falado: "retângulo da sala", genero: m, apelidos: ["luz retangulo", "retangulo sala estar"] }
+  28: { tipo: luz, falado: "retângulo da sala de estar", genero: m, apelidos: ["luz retangulo", "retangulo sala estar"] }
   31: { tipo: luz, falado: "luz do painel da TV", apelidos: ["luz painel", "painel tv"] }
-  32: { tipo: luz, falado: "perímetro da sala", genero: m, apelidos: ["luz perimetro", "perimetro sala estar"] }
+  32: { tipo: luz, falado: "perímetro da sala de estar", genero: m, apelidos: ["luz perimetro", "perimetro sala estar"] }
   42: { tipo: cortina, falado: "cortina 7", apelidos: ["cortina 7"] }
   43: { tipo: cortina, falado: "cortina 8", apelidos: ["cortina 8"] }
   44: { tipo: cortina, falado: "cortina 9", apelidos: ["cortina 9"] }
