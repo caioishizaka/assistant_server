@@ -32,7 +32,7 @@ import java.util.Locale;
  * Fase 7: a tela mostra todas as hipóteses com o CONFIDENCE_SCORES cru, para o teste da
  * confiança (PLAN.md, seção 10, Fase 7). Fica aberta depois de falar, até o botão "Fechar".
  */
-public class MainActivity extends Activity implements RecognitionListener, TextToSpeech.OnInitListener {
+public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
 
     /** `adb logcat -s Assistente`: cada tentativa, com hipóteses, erro e envio. Nunca o token. */
     static final String TAG = "Assistente";
@@ -50,6 +50,7 @@ public class MainActivity extends Activity implements RecognitionListener, TextT
     private boolean ttsPronto;
     private String falaPendente;
     private long inicioEscuta;
+    private int sessao;
 
     @Override
     protected void onCreate(Bundle estado) {
@@ -125,22 +126,28 @@ public class MainActivity extends Activity implements RecognitionListener, TextT
         return t;
     }
 
-    /** Um reconhecedor novo a cada tentativa: reaproveitar o mesmo passa a dar "sem fala" na hora em
-     *  vários aparelhos. O TTS para antes, para a resposta anterior não disputar o microfone. */
+    /**
+     * Um reconhecedor só, a vida toda da tela: destruir e recriar a cada tentativa fazia o antigo
+     * entregar o erro 11 ao listener da tentativa nova, e o app reativava o botão com o serviço
+     * ainda ouvindo. Cada tentativa tem o seu número de sessão; callback de sessão antiga é
+     * ignorado. O TTS para antes, para a resposta anterior não disputar o áudio.
+     */
     private void ouvir() {
         if (tts != null) {
             tts.stop();
         }
-        if (reconhecedor != null) {
-            reconhecedor.destroy();
-        }
-        reconhecedor = SpeechRecognizer.createSpeechRecognizer(this);
         if (reconhecedor == null) {
-            status.setText("Reconhecimento de voz indisponível neste aparelho");
-            Log.w(TAG, "createSpeechRecognizer devolveu null");
-            return;
+            reconhecedor = SpeechRecognizer.createSpeechRecognizer(this);
+            if (reconhecedor == null) {
+                status.setText("Reconhecimento de voz indisponível neste aparelho");
+                Log.w(TAG, "createSpeechRecognizer devolveu null");
+                return;
+            }
+        } else {
+            reconhecedor.cancel();
         }
-        reconhecedor.setRecognitionListener(this);
+        sessao++;
+        reconhecedor.setRecognitionListener(new Ouvinte(sessao));
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "pt-BR");
@@ -151,7 +158,7 @@ public class MainActivity extends Activity implements RecognitionListener, TextT
         resposta.setText("");
         falar.setEnabled(false);
         inicioEscuta = SystemClock.elapsedRealtime();
-        Log.i(TAG, "ouvindo");
+        Log.i(TAG, "sessão " + sessao + ": ouvindo");
         reconhecedor.startListening(intent);
     }
 
@@ -159,8 +166,7 @@ public class MainActivity extends Activity implements RecognitionListener, TextT
         return SystemClock.elapsedRealtime() - inicioEscuta;
     }
 
-    @Override
-    public void onResults(Bundle resultados) {
+    private void aoResultado(Bundle resultados) {
         ArrayList<String> textos = resultados.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         float[] confianca = resultados.getFloatArray(SpeechRecognizer.CONFIDENCE_SCORES);
         Log.i(TAG, "resultado em " + msDesdeInicio() + " ms: hipoteses=" + textos
@@ -280,8 +286,7 @@ public class MainActivity extends Activity implements RecognitionListener, TextT
         }
     }
 
-    @Override
-    public void onError(int erro) {
+    private void aoErro(int erro) {
         long ms = msDesdeInicio();
         Log.w(TAG, "erro do reconhecedor " + erro + " após " + ms + " ms");
         String detalhe = " (erro " + erro + ", " + ms + " ms)";
@@ -299,31 +304,65 @@ public class MainActivity extends Activity implements RecognitionListener, TextT
         }
     }
 
-    @Override
-    public void onReadyForSpeech(Bundle parametros) {
-    }
+    /** Listener de uma tentativa. Só a sessão atual mexe na tela; as antigas só deixam rastro no log. */
+    private final class Ouvinte implements RecognitionListener {
+        private final int id;
 
-    @Override
-    public void onBeginningOfSpeech() {
-    }
+        Ouvinte(int id) {
+            this.id = id;
+        }
 
-    @Override
-    public void onRmsChanged(float nivel) {
-    }
+        private boolean atual(String evento) {
+            if (id == sessao) {
+                return true;
+            }
+            Log.i(TAG, "sessão " + id + " (antiga, atual " + sessao + "): " + evento + " ignorado");
+            return false;
+        }
 
-    @Override
-    public void onBufferReceived(byte[] buffer) {
-    }
+        @Override
+        public void onResults(Bundle resultados) {
+            if (atual("resultado")) {
+                aoResultado(resultados);
+            }
+        }
 
-    @Override
-    public void onEndOfSpeech() {
-    }
+        @Override
+        public void onError(int erro) {
+            if (atual("erro " + erro)) {
+                aoErro(erro);
+            }
+        }
 
-    @Override
-    public void onPartialResults(Bundle parciais) {
-    }
+        @Override
+        public void onReadyForSpeech(Bundle parametros) {
+            Log.i(TAG, "sessão " + id + ": microfone pronto em " + msDesdeInicio() + " ms");
+        }
 
-    @Override
-    public void onEvent(int tipo, Bundle parametros) {
+        @Override
+        public void onBeginningOfSpeech() {
+            Log.i(TAG, "sessão " + id + ": fala detectada em " + msDesdeInicio() + " ms");
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+            Log.i(TAG, "sessão " + id + ": fim da fala em " + msDesdeInicio() + " ms");
+        }
+
+        @Override
+        public void onRmsChanged(float nivel) {
+        }
+
+        @Override
+        public void onBufferReceived(byte[] buffer) {
+        }
+
+        @Override
+        public void onPartialResults(Bundle parciais) {
+        }
+
+        @Override
+        public void onEvent(int tipo, Bundle parametros) {
+        }
     }
 }
