@@ -650,14 +650,35 @@ Primeira instalação de app nova no andes: checklist completo do `GUIA-APPS.md`
 
 Volta para: 👤C (Fase 6). Deploys seguintes: fluxo normal do guia.
 
-### Fase 6: ambiente de build Android no andes (👤C + 🧠O)
-1. 🧠O passa o `sudo apt install openjdk-21-jdk-headless` para o 👤C.
-2. 🧠O, sem `sudo`: Android SDK command-line tools em `~/android-sdk` (zip oficial, conferindo o
-   SHA-256 publicado), `sdkmanager "platform-tools" "build-tools;<atual>" "platforms;android-<atual>"`,
-   aceitar as licenças (👤C confirma). Nada no `PATH` global; o `build.py` acha pelo `ANDROID_HOME`.
-3. 👤C, no celular: Opções do desenvolvedor → Depuração sem fio → "Parear com código". 🧠O roda
-   `adb pair <ip>:<porta>` e `adb connect <ip>:<porta>` com os números que o Caio ditar.
-4. Teste: `adb devices` lista o Razr.
+### Fase 6: ambiente de build Android no andes (👤C `sudo`, 🤖H o resto)
+Pré-requisito, 👤C (já passado pelo Opus): `sudo apt install -y openjdk-21-jdk-headless`.
+
+🤖H, sem `sudo`, nada fora de `~/android-sdk` e nada no `PATH` global (o `build.py` acha o SDK pelo
+`ANDROID_HOME`):
+1. `java -version` e `javac -version` mostram 21. Se não, **para** e pede o `apt` ao Caio.
+2. Na página oficial `https://developer.android.com/studio#command-line-tools-only`, pegar o nome do
+   zip **Linux** (`commandlinetools-linux-<build>_latest.zip`) e o **SHA-256** publicado ao lado.
+   Baixar de `https://dl.google.com/android/repository/<nome do zip>` para `~/android-sdk/tmp/`.
+   `sha256sum` tem que bater com o da página. Não bateu, ou a página não mostra o SHA-256: **para**,
+   apaga o zip e chama o Opus. Nunca segue com um zip não conferido.
+3. Extrair para `~/android-sdk/cmdline-tools/latest/` (o zip traz uma pasta `cmdline-tools/`: o
+   conteúdo dela vai para dentro de `latest/`). Sem `unzip` no andes: usar `python3 -m zipfile -e`,
+   que **não preserva** o bit de execução, então depois `chmod +x` em `latest/bin/*`. Apagar o zip.
+4. `export ANDROID_HOME=~/android-sdk` (só no comando) e `sdkmanager --list`. Escolher a plataforma
+   estável mais nova com API **≥ 35** (sem `-ext`, preview ou `rc`) e o `build-tools` estável da
+   mesma API. Mostrar ao Caio as licenças que o `sdkmanager --licenses` pede e **esperar o ok dele**
+   antes de aceitar. Depois: `sdkmanager "platform-tools" "platforms;android-<N>" "build-tools;<versão>"`.
+5. 👤C, no celular: Opções do desenvolvedor → Depuração sem fio → **Parear com código**. Ele dita o
+   `IP:porta` e o código de pareamento; 🤖H roda `~/android-sdk/platform-tools/adb pair <IP:porta> <código>`.
+   O `adb connect` usa **outra porta**, a que aparece na tela principal de "Depuração sem fio"
+   ("Endereço IP e porta"): pedir ao Caio e rodar `adb connect <IP:porta>`.
+6. Teste: `adb devices` lista o Razr como `device`. Registrar na seção 11:
+   `adb shell getprop ro.build.version.release`, `ro.build.version.sdk`, `ro.product.model`, e as
+   versões escolhidas de plataforma e `build-tools`.
+7. Branch `feat/fase6-ambiente`, commit só do `PLAN.md` (seção 11), push, relato.
+
+**Para e chama o Opus se:** checksum não bate; `sdkmanager` falha duas vezes; pareamento falha
+duas vezes (código expira em ~1 min: pedir um novo ao Caio antes de contar como falha).
 
 Volta para: 🤖H (Fase 7).
 
@@ -699,6 +720,7 @@ Volta para: 👤C (Fase 9).
 
 ## 11. Resultados de testes (preenchido durante as fases)
 
+- Aparelho e SDK (Fase 6): _pendente_.
 - Confiança do `SpeechRecognizer` no Razr (Fase 7): _pendente_.
 - Reconhecimento offline pt-BR (Fase 7): _pendente_.
 
