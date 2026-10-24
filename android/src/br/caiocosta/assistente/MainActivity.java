@@ -5,10 +5,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -21,6 +23,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -31,6 +34,8 @@ import java.util.Locale;
  */
 public class MainActivity extends Activity implements RecognitionListener, TextToSpeech.OnInitListener {
 
+    /** `adb logcat -s Assistente`: cada tentativa, com hipóteses, erro e envio. Nunca o token. */
+    static final String TAG = "Assistente";
     private static final int PEDIDO_AUDIO = 1;
     private static final String UTTERANCE = "resposta";
 
@@ -44,6 +49,7 @@ public class MainActivity extends Activity implements RecognitionListener, TextT
     private TextToSpeech tts;
     private boolean ttsPronto;
     private String falaPendente;
+    private long inicioEscuta;
 
     @Override
     protected void onCreate(Bundle estado) {
@@ -119,15 +125,22 @@ public class MainActivity extends Activity implements RecognitionListener, TextT
         return t;
     }
 
+    /** Um reconhecedor novo a cada tentativa: reaproveitar o mesmo passa a dar "sem fala" na hora em
+     *  vários aparelhos. O TTS para antes, para a resposta anterior não disputar o microfone. */
     private void ouvir() {
-        if (reconhecedor == null) {
-            reconhecedor = SpeechRecognizer.createSpeechRecognizer(this);
-            if (reconhecedor == null) {
-                status.setText("Reconhecimento de voz indisponível neste aparelho");
-                return;
-            }
-            reconhecedor.setRecognitionListener(this);
+        if (tts != null) {
+            tts.stop();
         }
+        if (reconhecedor != null) {
+            reconhecedor.destroy();
+        }
+        reconhecedor = SpeechRecognizer.createSpeechRecognizer(this);
+        if (reconhecedor == null) {
+            status.setText("Reconhecimento de voz indisponível neste aparelho");
+            Log.w(TAG, "createSpeechRecognizer devolveu null");
+            return;
+        }
+        reconhecedor.setRecognitionListener(this);
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "pt-BR");
@@ -137,17 +150,26 @@ public class MainActivity extends Activity implements RecognitionListener, TextT
         ouvido.setText("");
         resposta.setText("");
         falar.setEnabled(false);
+        inicioEscuta = SystemClock.elapsedRealtime();
+        Log.i(TAG, "ouvindo");
         reconhecedor.startListening(intent);
+    }
+
+    private long msDesdeInicio() {
+        return SystemClock.elapsedRealtime() - inicioEscuta;
     }
 
     @Override
     public void onResults(Bundle resultados) {
         ArrayList<String> textos = resultados.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         float[] confianca = resultados.getFloatArray(SpeechRecognizer.CONFIDENCE_SCORES);
+        Log.i(TAG, "resultado em " + msDesdeInicio() + " ms: hipoteses=" + textos
+                + " confianca=" + Arrays.toString(confianca));
         mostrarOuvido(textos, confianca);
         JSONObject pedido = montarPedido(textos, confianca);
         if (pedido == null) {
-            mostrar("Não ouvi nada");
+            Log.w(TAG, "resultado sem hipótese com texto");
+            mostrar("Não ouvi nada (resultado vazio, " + msDesdeInicio() + " ms)");
             return;
         }
         enviar(pedido);
@@ -204,13 +226,20 @@ public class MainActivity extends Activity implements RecognitionListener, TextT
             String fala;
             if (config.token().isEmpty()) {
                 fala = "token não configurado";
+                Log.w(TAG, "token não configurado: nada enviado ao servidor");
             } else {
+                long inicio = SystemClock.elapsedRealtime();
                 try {
-                    fala = Comando.falaDa(Comando.enviar(config, pedido.toString()));
+                    Comando.Resposta r = Comando.enviar(config, pedido.toString());
+                    fala = Comando.falaDa(r);
+                    Log.i(TAG, "servidor respondeu " + r.status + " em "
+                            + (SystemClock.elapsedRealtime() - inicio) + " ms: " + fala);
                 } catch (Comando.SemConexao erro) {
                     fala = "sem conexão com a casa";
+                    Log.w(TAG, "sem conexão (LAN e Meshnet): " + erro.getMessage());
                 } catch (IOException erro) {
                     fala = "sem resposta da casa";
+                    Log.w(TAG, "conectou mas não houve resposta: " + erro);
                 }
             }
             String texto = fala;
@@ -253,16 +282,19 @@ public class MainActivity extends Activity implements RecognitionListener, TextT
 
     @Override
     public void onError(int erro) {
+        long ms = msDesdeInicio();
+        Log.w(TAG, "erro do reconhecedor " + erro + " após " + ms + " ms");
+        String detalhe = " (erro " + erro + ", " + ms + " ms)";
         switch (erro) {
             case SpeechRecognizer.ERROR_NO_MATCH:
             case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
-                mostrar("Não ouvi nada");
+                mostrar("Não ouvi nada" + detalhe);
                 break;
             case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
                 mostrar("Sem permissão de microfone");
                 break;
             default:
-                mostrar("Erro no reconhecimento de voz (" + erro + ")");
+                mostrar("Erro no reconhecimento de voz" + detalhe);
                 break;
         }
     }
