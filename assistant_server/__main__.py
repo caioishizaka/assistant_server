@@ -1,6 +1,7 @@
 """Sobe o serviço: `python -m assistant_server [--port 8105]`. Escuta só em 127.0.0.1 (o nginx é quem expõe)."""
 
 import argparse
+import logging
 import os
 import sys
 
@@ -14,6 +15,8 @@ def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(prog="assistant_server")
     parser.add_argument("--port", type=int, default=8105)
     args = parser.parse_args(argv)
+    # O journal já põe data e hora
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
 
     settings = Settings.do_ambiente(os.environ)
     faltando = [nome for nome, valor in (("ASSISTANT_TOKEN", settings.assistant_token),

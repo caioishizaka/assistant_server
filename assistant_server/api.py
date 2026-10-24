@@ -14,7 +14,7 @@ from assistant_server.config import Settings
 from assistant_server.modules.casa.catalog import Catalogo
 from assistant_server.modules.casa.colisoes import carregar_verificado
 from assistant_server.modules.casa.hub_client import HubClient
-from assistant_server.modules.casa.module import OK, ModuloCasa
+from assistant_server.modules.casa.module import ModuloCasa
 from assistant_server.request_log import RegistroRequisicoes
 
 INTERVALO_VERIFICACAO = 60  # segundos
@@ -30,7 +30,9 @@ class ComandoEntrada(BaseModel):
 
 
 async def _reverificar(modulo: ModuloCasa) -> None:
-    while modulo.catalogo_estado != OK:
+    """Sempre, não só até passar: um equipamento apagado no hub depois do startup também invalida
+    o cadastro, e o `hub` do /v1/health não fica parado no último comando."""
+    while True:
         await asyncio.sleep(INTERVALO_VERIFICACAO)
         await modulo.verificar()
 

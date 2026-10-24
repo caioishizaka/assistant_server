@@ -433,7 +433,7 @@ phrases: {}
    - cada apelido de grupo, em "{verbo} as {apelido}" e "{verbo} todas as {apelido}", resolve para
      o próprio grupo e não é capturado por equipamento.
 
-**Contra o hub, não derrubam o serviço:** no startup e a cada 60 s até passar, `GET /api/equipment`:
+**Contra o hub, não derrubam o serviço:** no startup e depois a cada 60 s, `GET /api/equipment`:
 - todo id do YAML existe, com `kind` compatível (`luz`→`light`, `cortina`→`curtain`,
   `persiana`→`blind`) e não `momentary`. Falhou → `catalog: "invalid"`, `/v1/command` responde
   `error` com "cadastro inválido, veja o log" e o journal diz qual id;
@@ -601,7 +601,7 @@ Volta para: 🤖H (Fase 3).
 2. `hub_client.py` (no molde do `~/dev/caio_mcp/caio_mcp/casa/hub_client.py`: `httpx.AsyncClient`,
    Bearer, timeout 5 s, exceções `HubIndisponivel` e `HubRecusou`) com `equipment()`, `set()`,
    `move()`, `lights_off()`, `lights_on()`, `health()`.
-3. Verificação contra o hub (seção 6) com nova tentativa a cada 60 s; estados `pending`/`ok`/`invalid`.
+3. Verificação contra o hub (seção 6) repetida a cada 60 s; estados `pending`/`ok`/`invalid`.
 4. `module.py` (`execute`), `speech.py`, dry-run (seção 7).
 5. `api.py`: `/v1/command` e `/v1/health` (seção 4); `__main__.py` com `--port` (padrão 8105) e
    `--host 127.0.0.1` fixo; `request_log.py`.
