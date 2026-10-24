@@ -10,6 +10,7 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,8 +31,9 @@ import java.util.Locale;
 /**
  * Ouve o comando, manda as hipóteses para o servidor e fala a resposta.
  *
- * Fase 7: a tela mostra todas as hipóteses com o CONFIDENCE_SCORES cru, para o teste da
- * confiança (PLAN.md, seção 10, Fase 7). Fica aberta depois de falar, até o botão "Fechar".
+ * Abre pelo ícone ou como assistente padrão (ACTION_ASSIST, o gesto do aparelho). A tela mostra
+ * as hipóteses com o CONFIDENCE_SCORES cru. Fecha sozinha quando o comando dá certo, depois de
+ * falar; com erro, fica aberta para ler o que houve (decisão do Caio, Fase 8).
  */
 public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
 
@@ -49,6 +51,8 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
     private SpeechRecognizer reconhecedor;
     private TextToSpeech tts;
     private boolean ttsPronto;
+    private boolean ttsIndisponivel;
+    private boolean fecharAoTerminar;
     private String falaPendente;
     private long inicioEscuta;
     private int sessao;
@@ -73,6 +77,17 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
             ouvir();
         } else {
             status.setText("Sem permissão de microfone");
+        }
+    }
+
+    /** Gesto de assistente com a tela já aberta (singleTop): começa a ouvir de novo. */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        Log.i(TAG, "aberto de novo: " + intent.getAction());
+        if (checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+            ouvir();
         }
     }
 
@@ -134,6 +149,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
      * ignorado. O TTS para antes, para a resposta anterior não disputar o áudio.
      */
     private void ouvir() {
+        fecharAoTerminar = false;
         if (tts != null) {
             tts.stop();
         }
@@ -231,6 +247,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         status.setText("Falando com a casa…");
         new Thread(() -> {
             String fala;
+            boolean sucesso = false;
             if (config.token().isEmpty()) {
                 fala = "token não configurado";
                 Log.w(TAG, "token não configurado: nada enviado ao servidor");
@@ -239,6 +256,7 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
                 try {
                     Comando.Resposta r = Comando.enviar(config, pedido.toString());
                     fala = Comando.falaDa(r);
+                    sucesso = Comando.deuCerto(r);
                     Log.i(TAG, "servidor respondeu " + r.status + " em "
                             + (SystemClock.elapsedRealtime() - inicio) + " ms: " + fala);
                 } catch (Comando.SemConexao erro) {
@@ -253,15 +271,28 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
                 }
             }
             String texto = fala;
-            runOnUiThread(() -> terminar(texto));
+            boolean fechar = sucesso;
+            runOnUiThread(() -> terminar(texto, fechar));
         }).start();
     }
 
-    private void terminar(String fala) {
+    /** Deu certo: fala e fecha quando o TTS terminar. Deu errado: fica aberto para ler o que houve. */
+    private void terminar(String fala, boolean sucesso) {
         resposta.setText(fala);
         status.setText("Pronto");
         falar.setEnabled(true);
+        fecharAoTerminar = sucesso;
         falarTexto(fala);
+        if (sucesso && ttsIndisponivel) {
+            resposta.postDelayed(this::fecharSeDeuCerto, 1500);
+        }
+    }
+
+    private void fecharSeDeuCerto() {
+        if (fecharAoTerminar) {
+            Log.i(TAG, "comando ok: fechando");
+            finish();
+        }
     }
 
     private void mostrar(String mensagem) {
@@ -279,12 +310,34 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
 
     @Override
     public void onInit(int estado) {
-        if (estado != TextToSpeech.SUCCESS) {
+        if (estado == TextToSpeech.SUCCESS) {
+            int idioma = tts.setLanguage(Locale.forLanguageTag("pt-BR"));
+            ttsPronto = idioma != TextToSpeech.LANG_MISSING_DATA && idioma != TextToSpeech.LANG_NOT_SUPPORTED;
+        }
+        if (!ttsPronto) {
+            ttsIndisponivel = true;
+            Log.w(TAG, "TTS pt-BR indisponível (estado " + estado + ")");
+            if (fecharAoTerminar) {
+                resposta.postDelayed(this::fecharSeDeuCerto, 1500);
+            }
             return;
         }
-        int idioma = tts.setLanguage(Locale.forLanguageTag("pt-BR"));
-        ttsPronto = idioma != TextToSpeech.LANG_MISSING_DATA && idioma != TextToSpeech.LANG_NOT_SUPPORTED;
-        if (ttsPronto && falaPendente != null) {
+        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            @Override
+            public void onStart(String id) {
+            }
+
+            @Override
+            public void onDone(String id) {
+                runOnUiThread(MainActivity.this::fecharSeDeuCerto);
+            }
+
+            @Override
+            public void onError(String id) {
+                runOnUiThread(MainActivity.this::fecharSeDeuCerto);
+            }
+        });
+        if (falaPendente != null) {
             tts.speak(falaPendente, TextToSpeech.QUEUE_FLUSH, null, UTTERANCE);
             falaPendente = null;
         }

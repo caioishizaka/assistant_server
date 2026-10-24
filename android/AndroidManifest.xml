@@ -25,10 +25,17 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- Assistente padrão: uma atividade exportada com ACTION_ASSIST + DEFAULT já qualifica o
+                 app para o papel de assistente (AOSP, AssistantRoleBehavior). Sem VoiceInteractionService. -->
+            <intent-filter>
+                <action android:name="android.intent.action.ASSIST" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
