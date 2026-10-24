@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -243,6 +244,9 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
                 } catch (Comando.SemConexao erro) {
                     fala = "sem conexão com a casa";
                     Log.w(TAG, "sem conexão (LAN e Meshnet): " + erro.getMessage());
+                } catch (MalformedURLException erro) {
+                    fala = "endereço inválido nas configurações";
+                    Log.w(TAG, "endereço inválido: " + erro.getMessage());
                 } catch (IOException erro) {
                     fala = "sem resposta da casa";
                     Log.w(TAG, "conectou mas não houve resposta: " + erro);

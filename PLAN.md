@@ -721,7 +721,9 @@ Volta para: 👤C (Fase 9).
 ## 11. Resultados de testes (preenchido durante as fases)
 
 - Aparelho e SDK (Fase 6, 2026-10-23): Motorola Razr 60 (`motorola razr 60`), Android 16 (SDK 36), conectado por USB e reconhecido pelo `adb` como `device`. Ambiente no andes: OpenJDK 21.0.12, platforms `android-36` (rev. 2), build-tools `36.1.0`, platform-tools `37.0.1` (revisão mais nova escolhida pelo `sdkmanager`), `adb` 1.0.41. Licenças aceitas pelo Caio. Pareamento sem fio: não feito; a conexão é por cabo.
-- Confiança do `SpeechRecognizer` no Razr (Fase 7): _pendente_.
+- Confiança do `SpeechRecognizer` no Razr (Fase 7, 2026-10-23, primeira rodada): de 1 a 5 hipóteses por fala (a maioria 2). `CONFIDENCE_SCORES` vem com um valor por hipótese, não só na primeira. A ordem do Android **não** é a ordem da confiança (ex.: 0,78 / 0,74 / 0,68 / 0,72). Decisão do Opus: o app **não reordena**; manda na ordem do Android, com a confiança só para o log. A diferença entre hipóteses é pequena e o ranking do reconhecedor usa mais do que esse número. Rever com os dados da Fase 9.
+- Transcrição (Fase 7): "persiana" saiu como "parcela" ao menos uma vez; "apagar" às vezes vira "pagar" nas hipóteses de baixo. Não mapeado: esperar o `requests.jsonl` da Fase 9.
+- Estabilidade do reconhecimento (Fase 7): reaproveitar ou recriar o reconhecedor sem isolar as sessões travava depois de 3 ou 4 tentativas (erro 11 de sessão antiga). Resolvido com um reconhecedor por tela, `cancel()` antes de cada escuta e callbacks de sessão antiga ignorados.
 - Reconhecimento offline pt-BR (Fase 7): _pendente_.
 
 ## 12. Roadmap (fora da v1)

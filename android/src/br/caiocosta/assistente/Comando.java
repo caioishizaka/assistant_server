@@ -78,8 +78,10 @@ final class Comando {
         return "erro no servidor";
     }
 
+    /** Endereço digitado sem esquema ("127.0.0.1:8197") vira http: o servidor é só HTTP. */
     static String urlDoComando(String base) {
-        String semFim = base.endsWith("/") ? base : base + "/";
+        String comEsquema = base.contains("://") ? base : "http://" + base;
+        String semFim = comEsquema.endsWith("/") ? comEsquema : comEsquema + "/";
         return semFim + "v1/command";
     }
 
