@@ -1,0 +1,432 @@
+{
+  "equipment": [
+    {
+      "id": 1,
+      "name": "Corredor L14",
+      "kind": "light",
+      "room_id": 1,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 2,
+      "name": "Spots Jogos L15",
+      "kind": "light",
+      "room_id": 2,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 3,
+      "name": "Spot Pilar L30",
+      "kind": "light",
+      "room_id": 3,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 4,
+      "name": "Sacada L31",
+      "kind": "light",
+      "room_id": 4,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 5,
+      "name": "Área Serviço L1",
+      "kind": "light",
+      "room_id": 5,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 6,
+      "name": "Geladeira L2",
+      "kind": "light",
+      "room_id": 6,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 7,
+      "name": "Copa L3",
+      "kind": "light",
+      "room_id": 6,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 8,
+      "name": "Pia Cozinha L4",
+      "kind": "light",
+      "room_id": 6,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 9,
+      "name": "BS Pia L16",
+      "kind": "light",
+      "room_id": 1,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 10,
+      "name": "BS Central L17",
+      "kind": "light",
+      "room_id": 1,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 11,
+      "name": "BS Box L18",
+      "kind": "light",
+      "room_id": 1,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 12,
+      "name": "Armário do Escritório L19",
+      "kind": "light",
+      "room_id": 7,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 13,
+      "name": "Spot Escritório L20",
+      "kind": "light",
+      "room_id": 7,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 14,
+      "name": "Spot Sala de Estar",
+      "kind": "light",
+      "room_id": 4,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 15,
+      "name": "Despensa L5",
+      "kind": "light",
+      "room_id": 6,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 16,
+      "name": "Mesa de Jantar L10",
+      "kind": "light",
+      "room_id": 3,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 17,
+      "name": "Spot Decoração L33",
+      "kind": "light",
+      "room_id": 4,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 18,
+      "name": "Spots Bancada L11",
+      "kind": "light",
+      "room_id": 3,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 19,
+      "name": "Banheiro do Escritório Central L23",
+      "kind": "light",
+      "room_id": 7,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 20,
+      "name": "Banheiro do Escritório Box L24",
+      "kind": "light",
+      "room_id": 7,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 21,
+      "name": "Banheiro Escritório Espelho L25",
+      "kind": "light",
+      "room_id": 7,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 22,
+      "name": "Banheiro Suíte Central L27",
+      "kind": "light",
+      "room_id": 8,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 23,
+      "name": "Banheiro Suíte Espelho L28",
+      "kind": "light",
+      "room_id": 8,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 24,
+      "name": "Banheiro Suíte Box L29",
+      "kind": "light",
+      "room_id": 8,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 25,
+      "name": "Churrasqueira L12",
+      "kind": "light",
+      "room_id": 3,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 26,
+      "name": "Lustre Jantar L13",
+      "kind": "light",
+      "room_id": 3,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 27,
+      "name": "Triturador Churrasqueira",
+      "kind": "disposal",
+      "room_id": 3,
+      "function": "switch",
+      "momentary": true
+    },
+    {
+      "id": 28,
+      "name": "Retângulo da Sala L9",
+      "kind": "light",
+      "room_id": 4,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 29,
+      "name": "Mesa Escritório Inferior L22",
+      "kind": "light",
+      "room_id": 7,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 30,
+      "name": "Mesa escritório Superior L21",
+      "kind": "light",
+      "room_id": 7,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 31,
+      "name": "Painel TV L7",
+      "kind": "light",
+      "room_id": 4,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 32,
+      "name": "Perímetro da Sala L8",
+      "kind": "light",
+      "room_id": 4,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 33,
+      "name": "Suíte L26",
+      "kind": "light",
+      "room_id": 8,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 34,
+      "name": "Spot Suíte L32",
+      "kind": "light",
+      "room_id": 8,
+      "function": "switch",
+      "momentary": false
+    },
+    {
+      "id": 35,
+      "name": "Cortinas Geral",
+      "kind": "curtain",
+      "room_id": 3,
+      "function": "cover",
+      "actions": [
+        "open",
+        "close",
+        "stop"
+      ]
+    },
+    {
+      "id": 36,
+      "name": "Cortina 1",
+      "kind": "curtain",
+      "room_id": 3,
+      "function": "cover",
+      "actions": [
+        "open",
+        "close",
+        "stop"
+      ]
+    },
+    {
+      "id": 37,
+      "name": "Cortina 2",
+      "kind": "curtain",
+      "room_id": 3,
+      "function": "cover",
+      "actions": [
+        "open",
+        "close",
+        "stop"
+      ]
+    },
+    {
+      "id": 38,
+      "name": "Cortina 3",
+      "kind": "curtain",
+      "room_id": 3,
+      "function": "cover",
+      "actions": [
+        "open",
+        "close",
+        "stop"
+      ]
+    },
+    {
+      "id": 39,
+      "name": "Cortina 4",
+      "kind": "curtain",
+      "room_id": 3,
+      "function": "cover",
+      "actions": [
+        "open",
+        "close",
+        "stop"
+      ]
+    },
+    {
+      "id": 40,
+      "name": "Cortina 5",
+      "kind": "curtain",
+      "room_id": 3,
+      "function": "cover",
+      "actions": [
+        "open",
+        "close",
+        "stop"
+      ]
+    },
+    {
+      "id": 41,
+      "name": "Cortina 6",
+      "kind": "curtain",
+      "room_id": 3,
+      "function": "cover",
+      "actions": [
+        "open",
+        "close",
+        "stop"
+      ]
+    },
+    {
+      "id": 42,
+      "name": "Cortina 7",
+      "kind": "curtain",
+      "room_id": 4,
+      "function": "cover",
+      "actions": [
+        "open",
+        "close",
+        "stop"
+      ]
+    },
+    {
+      "id": 43,
+      "name": "Cortina 8",
+      "kind": "curtain",
+      "room_id": 4,
+      "function": "cover",
+      "actions": [
+        "open",
+        "close",
+        "stop"
+      ]
+    },
+    {
+      "id": 44,
+      "name": "Cortina 9",
+      "kind": "curtain",
+      "room_id": 4,
+      "function": "cover",
+      "actions": [
+        "open",
+        "close",
+        "stop"
+      ]
+    },
+    {
+      "id": 45,
+      "name": "Persiana do escritório",
+      "kind": "blind",
+      "room_id": 7,
+      "function": "cover",
+      "actions": [
+        "open",
+        "close",
+        "stop"
+      ]
+    },
+    {
+      "id": 46,
+      "name": "Persiana do quarto",
+      "kind": "blind",
+      "room_id": 8,
+      "function": "cover",
+      "actions": [
+        "open",
+        "close",
+        "stop"
+      ]
+    },
+    {
+      "id": 47,
+      "name": "Persiana da sala de jogos",
+      "kind": "blind",
+      "room_id": 2,
+      "function": "cover",
+      "actions": [
+        "open",
+        "close",
+        "stop"
+      ]
+    }
+  ]
+}

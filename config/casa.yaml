@@ -1,0 +1,97 @@
+devices:
+  # Regra: todo apelido tem uma palavra-âncora: o substantivo do tipo no singular (luz, spot,
+  # cortina, persiana) ou um nome próprio do equipamento (lustre, painel, box, espelho, pia,
+  # mesa...). Âncora presente em mais de um equipamento (pia, mesa, box, espelho, spot) sempre
+  # leva qualificador. Nenhum apelido de equipamento pode estar contido numa frase de grupo.
+
+  # Área de Serviço
+  5:  { tipo: luz, falado: "luz da área de serviço", apelidos: ["luz area servico", "luzes area servico"] }
+  # Cozinha
+  6:  { tipo: luz, falado: "luz da geladeira", apelidos: ["luz geladeira"] }
+  7:  { tipo: luz, falado: "luz da copa", apelidos: ["luz copa"] }
+  8:  { tipo: luz, falado: "luz da pia da cozinha", apelidos: ["luz pia cozinha", "pia cozinha"] }
+  15: { tipo: luz, falado: "luz da despensa", apelidos: ["luz despensa"] }
+  # Sala de estar
+  4:  { tipo: luz, falado: "luz da sacada", apelidos: ["luz sacada"] }
+  14: { tipo: luz, falado: "spot da sala de estar", genero: m, apelidos: ["spot sala estar"] }
+  17: { tipo: luz, falado: "spot da decoração", genero: m, apelidos: ["spot decoracao", "luz decoracao"] }
+  28: { tipo: luz, falado: "retângulo da sala de estar", genero: m, apelidos: ["luz retangulo", "retangulo sala estar"] }
+  31: { tipo: luz, falado: "luz do painel da TV", apelidos: ["luz painel", "painel tv"] }
+  32: { tipo: luz, falado: "perímetro da sala de estar", genero: m, apelidos: ["luz perimetro", "perimetro sala estar"] }
+  42: { tipo: cortina, falado: "cortina 7", apelidos: ["cortina 7"] }
+  43: { tipo: cortina, falado: "cortina 8", apelidos: ["cortina 8"] }
+  44: { tipo: cortina, falado: "cortina 9", apelidos: ["cortina 9"] }
+  # Sala de Jantar
+  3:  { tipo: luz, falado: "spot do pilar", genero: m, apelidos: ["spot pilar", "luz pilar"] }
+  16: { tipo: luz, falado: "luz da mesa de jantar", apelidos: ["luz mesa jantar", "mesa jantar"] }
+  18: { tipo: luz, falado: "spots da bancada", genero: m, plural: true, apelidos: ["spots bancada", "spot bancada", "luz bancada"] }
+  25: { tipo: luz, falado: "luz da churrasqueira", apelidos: ["luz churrasqueira"] }
+  26: { tipo: luz, falado: "lustre do jantar", genero: m, apelidos: ["lustre"] }
+  36: { tipo: cortina, falado: "cortina 1", apelidos: ["cortina 1"] }
+  37: { tipo: cortina, falado: "cortina 2", apelidos: ["cortina 2"] }
+  38: { tipo: cortina, falado: "cortina 3", apelidos: ["cortina 3"] }
+  39: { tipo: cortina, falado: "cortina 4", apelidos: ["cortina 4"] }
+  40: { tipo: cortina, falado: "cortina 5", apelidos: ["cortina 5"] }
+  41: { tipo: cortina, falado: "cortina 6", apelidos: ["cortina 6"] }
+  # Corredor (inclui o banheiro social)
+  1:  { tipo: luz, falado: "luz do corredor", apelidos: ["luz corredor", "luzes corredor"] }
+  9:  { tipo: luz, falado: "pia do banheiro social", apelidos: ["pia banheiro social", "luz pia banheiro social"] }
+  10: { tipo: luz, falado: "luz do banheiro social", apelidos: ["luz banheiro social", "luz central banheiro social"] }
+  11: { tipo: luz, falado: "box do banheiro social", genero: m, apelidos: ["box banheiro social", "box social"] }
+  # Sala de Jogos
+  2:  { tipo: luz, falado: "spots da sala de jogos", genero: m, plural: true, apelidos: ["spots jogos", "spot jogos", "luz sala jogos", "luzes sala jogos"] }
+  47: { tipo: persiana, falado: "persiana da sala de jogos", apelidos: ["persiana jogos", "persiana sala jogos"] }
+  # Escritório (inclui o banheiro do escritório)
+  12: { tipo: luz, falado: "luz do armário", apelidos: ["luz armario"] }
+  13: { tipo: luz, falado: "spot do escritório", genero: m, apelidos: ["spot escritorio"] }
+  29: { tipo: luz, falado: "mesa inferior", apelidos: ["mesa inferior"] }
+  30: { tipo: luz, falado: "mesa superior", apelidos: ["mesa superior"] }
+  19: { tipo: luz, falado: "luz do banheiro do escritório", apelidos: ["luz banheiro escritorio", "luz central banheiro escritorio"] }
+  20: { tipo: luz, falado: "box do banheiro do escritório", genero: m, apelidos: ["box banheiro escritorio", "box escritorio"] }
+  21: { tipo: luz, falado: "espelho do banheiro do escritório", genero: m, apelidos: ["espelho banheiro escritorio", "espelho escritorio"] }
+  45: { tipo: persiana, falado: "persiana do escritório", apelidos: ["persiana escritorio"] }
+  # Suíte master (único quarto; "quarto" e "suíte" são sinônimos)
+  33: { tipo: luz, falado: "luz do quarto", apelidos: ["luz quarto", "luz suite"] }
+  34: { tipo: luz, falado: "spot do quarto", genero: m, apelidos: ["spot quarto", "spot suite"] }
+  22: { tipo: luz, falado: "luz do banheiro da suíte", apelidos: ["luz banheiro suite", "luz banheiro quarto", "luz central banheiro suite"] }
+  23: { tipo: luz, falado: "espelho do banheiro da suíte", genero: m, apelidos: ["espelho banheiro suite", "espelho suite", "espelho quarto"] }
+  24: { tipo: luz, falado: "box do banheiro da suíte", genero: m, apelidos: ["box banheiro suite", "box suite", "box quarto"] }
+  46: { tipo: persiana, falado: "persiana do quarto", apelidos: ["persiana quarto", "persiana suite"] }
+
+groups:
+  # --- Luzes por cômodo (lista de ids; os banheiros são grupos à parte) ---
+  luzes_cozinha:
+    { tipo: luz, falado: "luzes da cozinha", apelidos: ["luzes cozinha"], alvo: [6, 7, 8, 15] }
+  luzes_sala_estar:
+    { tipo: luz, falado: "luzes da sala de estar", apelidos: ["luzes sala estar"], alvo: [4, 14, 17, 28, 31, 32] }
+  luzes_sala_jantar:
+    { tipo: luz, falado: "luzes da sala de jantar", apelidos: ["luzes sala jantar", "luzes jantar"], alvo: [3, 16, 18, 25, 26] }
+  luzes_banheiro_social:
+    { tipo: luz, falado: "luzes do banheiro social", apelidos: ["luzes banheiro social"], alvo: [9, 10, 11] }
+  luzes_escritorio:
+    { tipo: luz, falado: "luzes do escritório", apelidos: ["luzes escritorio"], alvo: [12, 13, 29, 30] }
+  luzes_banheiro_escritorio:
+    { tipo: luz, falado: "luzes do banheiro do escritório", apelidos: ["luzes banheiro escritorio"], alvo: [19, 20, 21] }
+  luzes_quarto:
+    { tipo: luz, falado: "luzes do quarto", apelidos: ["luzes quarto", "luzes suite"], alvo: [33, 34] }
+  luzes_banheiro_suite:
+    { tipo: luz, falado: "luzes do banheiro da suíte", apelidos: ["luzes banheiro suite", "luzes banheiro quarto"], alvo: [22, 23, 24] }
+  # Cômodos com uma luz só (área de serviço, corredor, sala de jogos): o apelido plural fica no
+  # próprio equipamento ("luzes do corredor" → id 1).
+
+  # --- Cortinas ---
+  cortinas_jantar:
+    { tipo: cortina, falado: "cortinas do jantar", apelidos: ["cortinas jantar", "cortinas sala jantar"], alvo: [35] }  # 35 = "Cortinas Geral", equipamento físico
+  cortinas_sala_estar:
+    { tipo: cortina, falado: "cortinas da sala de estar", apelidos: ["cortinas sala estar"], alvo: [42, 43, 44] }
+
+  # --- Globais ---
+  todas_luzes:
+    { tipo: luz, escopo: global, falado: "todas as luzes", apelidos: ["luzes casa"], alvo: hub_todas_luzes }
+  todas_cortinas:
+    { tipo: cortina, escopo: global, falado: "todas as cortinas", apelidos: ["cortinas casa"], alvo: [35, 42, 43, 44] }
+
+  # Não existe grupo de persianas, nem global.
+
+phrases: {}
+  # "boa noite": { acao: off, alvo: todas_luzes }
