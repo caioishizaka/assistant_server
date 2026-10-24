@@ -724,7 +724,9 @@ Volta para: 👤C (Fase 9).
 - Confiança do `SpeechRecognizer` no Razr (Fase 7, 2026-10-23, primeira rodada): de 1 a 5 hipóteses por fala (a maioria 2). `CONFIDENCE_SCORES` vem com um valor por hipótese, não só na primeira. A ordem do Android **não** é a ordem da confiança (ex.: 0,78 / 0,74 / 0,68 / 0,72). Decisão do Opus: o app **não reordena**; manda na ordem do Android, com a confiança só para o log. A diferença entre hipóteses é pequena e o ranking do reconhecedor usa mais do que esse número. Rever com os dados da Fase 9.
 - Transcrição (Fase 7): "persiana" saiu como "parcela" ao menos uma vez; "apagar" às vezes vira "pagar" nas hipóteses de baixo. Não mapeado: esperar o `requests.jsonl` da Fase 9.
 - Estabilidade do reconhecimento (Fase 7): reaproveitar ou recriar o reconhecedor sem isolar as sessões travava depois de 3 ou 4 tentativas (erro 11 de sessão antiga). Resolvido com um reconhecedor por tela, `cancel()` antes de cada escuta e callbacks de sessão antiga ignorados.
-- Reconhecimento offline pt-BR (Fase 7): _pendente_.
+- Reconhecimento offline pt-BR (Fase 7): não testado (opcional).
+- Produção pelo app (Fase 7, 2026-10-23): LAN (Wi-Fi, origem `192.168.68.60`) e Meshnet (Wi-Fi desligado, origem `100.126.245.111`, peer `himalayas`) funcionando, comandos reais aceitos pelo hub; servidor resolve em ~11 ms para luz e 100–400 ms para cortina (fila do hub RF). Logo depois de desligar o Wi-Fi, o túnel da Meshnet leva alguns segundos renegociando (cai de direto para relay) e a conexão não fecha nesse intervalo; passado isso, funciona. Se incomodar no uso real, subir `CONEXAO_MESH_MS` de 3 para 5 s. O endereço da Meshnet no app tem que ser `http://` (o servidor não tem TLS); sem esquema, o app completa `http://`.
+- Cadastro (Fase 7): "luz do box/espelho" caía na luz central do banheiro; corrigido com apelidos "luz box …"/"luz espelho …" (mais palavras vencem). "Cortinas" saiu duas vezes como "curtidas": candidato a mapeamento na Fase 9.
 
 ## 12. Roadmap (fora da v1)
 
