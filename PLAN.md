@@ -720,7 +720,7 @@ Volta para: 👤C (Fase 9).
 
 ## 11. Resultados de testes (preenchido durante as fases)
 
-- Aparelho e SDK (Fase 6): _pendente_.
+- Aparelho e SDK (Fase 6, 2026-10-23): Motorola Razr 60 (`motorola razr 60`), Android 16 (SDK 36), conectado por USB e reconhecido pelo `adb` como `device`. Ambiente no andes: OpenJDK 21.0.12, platforms `android-36` (rev. 2), build-tools `36.1.0`, platform-tools `37.0.1` (revisão mais nova escolhida pelo `sdkmanager`), `adb` 1.0.41. Licenças aceitas pelo Caio. Pareamento sem fio: não feito; a conexão é por cabo.
 - Confiança do `SpeechRecognizer` no Razr (Fase 7): _pendente_.
 - Reconhecimento offline pt-BR (Fase 7): _pendente_.
 
