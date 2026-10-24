@@ -1,0 +1,22 @@
+[Unit]
+Description=assistant_server (assistente de voz da casa; atras do nginx em /assistant_server/)
+After=network-online.target home-devices.service
+Wants=network-online.target
+
+[Service]
+User=caio
+WorkingDirectory=/home/caio/apps/assistant_server
+# ASSISTANT_TOKEN, CASA_HUB_URL e CASA_HUB_TOKEN
+EnvironmentFile=/home/caio/apps/assistant_server/.env
+ExecStart=/home/caio/apps/assistant_server/.venv/bin/python -m assistant_server --port 8105
+Restart=on-failure
+RestartSec=5
+ProtectSystem=strict
+ProtectHome=read-only
+# requests.jsonl
+ReadWritePaths=/home/caio/apps/assistant_server/data
+PrivateTmp=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
