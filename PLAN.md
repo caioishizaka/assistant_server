@@ -504,11 +504,12 @@ Manifesto:
 - `network_security_config`: cleartext liberado só para `192.168.68.86`,
   `caio.ishizaka-andes.nord` e `127.0.0.1` (este último para testar no staging com `adb reverse`).
 
-Assistente padrão (Fase 8, Opus): o provável mínimo para aparecer em "App assistente digital
-padrão" é `VoiceInteractionService` + `VoiceInteractionSessionService` + um `RecognitionService`
-vazio + `res/xml/voice_interaction_service.xml` (`sessionService`, `recognitionService`,
-`supportsAssist="true"`). A sessão só abre a `MainActivity`. **A verificar** na fase; uma activity
-com `ACTION_ASSIST` sozinha provavelmente não basta nas versões atuais.
+Assistente padrão (Fase 8, feito): pela regra do AOSP (`AssistantRoleBehavior`), um app entra em
+"App assistente digital padrão" de dois jeitos: (1) uma atividade exportada com
+`android.intent.action.ASSIST` + `DEFAULT`; ou (2) um `VoiceInteractionService` com
+`BIND_VOICE_INTERACTION` e metadados com `sessionService`, `recognitionService` e
+`supportsAssist="true"`. Usado o (1), na `MainActivity` (`singleTop`). O (2) só faz falta para abrir
+na tela bloqueada sem desbloquear, o que tem implicação de segurança (decidir antes).
 
 ## 9. Regras para o Haiku
 
@@ -727,6 +728,7 @@ Volta para: 👤C (Fase 9).
 - Reconhecimento offline pt-BR (Fase 7): não testado (opcional).
 - Produção pelo app (Fase 7, 2026-10-23): LAN (Wi-Fi, origem `192.168.68.60`) e Meshnet (Wi-Fi desligado, origem `100.126.245.111`, peer `himalayas`) funcionando, comandos reais aceitos pelo hub; servidor resolve em ~11 ms para luz e 100–400 ms para cortina (fila do hub RF). Logo depois de desligar o Wi-Fi, o túnel da Meshnet leva alguns segundos renegociando (cai de direto para relay) e a conexão não fecha nesse intervalo; passado isso, funciona. Se incomodar no uso real, subir `CONEXAO_MESH_MS` de 3 para 5 s. O endereço da Meshnet no app tem que ser `http://` (o servidor não tem TLS); sem esquema, o app completa `http://`.
 - Cadastro (Fase 7): "luz do box/espelho" caía na luz central do banheiro; corrigido com apelidos "luz box …"/"luz espelho …" (mais palavras vencem). "Cortinas" saiu duas vezes como "curtidas": candidato a mapeamento na Fase 9.
+- Assistente padrão (Fase 8, 2026-10-23): o app aparece em "App assistente digital" e foi escolhido no lugar do app do Claude; o gesto abre o app (`ACTION_ASSIST`), ele ouve, fala e fecha quando dá certo; com "equipamento não identificado" fica aberto, e o gesto de novo recomeça a ouvir. Tela bloqueada: _pendente_.
 
 ## 12. Roadmap (fora da v1)
 
