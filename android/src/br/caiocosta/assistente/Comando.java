@@ -79,6 +79,18 @@ final class Comando {
     }
 
     /** Endereço digitado sem esquema ("127.0.0.1:8197") vira http: o servidor é só HTTP. */
+    /** O servidor entendeu e o hub aceitou (`status: ok`). É quando o app pode fechar sozinho. */
+    static boolean deuCerto(Resposta resposta) {
+        if (resposta.status != 200) {
+            return false;
+        }
+        try {
+            return "ok".equals(new JSONObject(resposta.corpo).optString("status"));
+        } catch (JSONException erro) {
+            return false;
+        }
+    }
+
     static String urlDoComando(String base) {
         String comEsquema = base.contains("://") ? base : "http://" + base;
         String semFim = comEsquema.endsWith("/") ? comEsquema : comEsquema + "/";
