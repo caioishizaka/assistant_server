@@ -37,7 +37,7 @@ devices:
   1:  { tipo: luz, falado: "luz do corredor", apelidos: ["luz corredor", "luzes corredor"] }
   9:  { tipo: luz, falado: "pia do banheiro social", apelidos: ["pia banheiro social", "luz pia banheiro social"] }
   10: { tipo: luz, falado: "luz do banheiro social", apelidos: ["luz banheiro social", "luz central banheiro social"] }
-  11: { tipo: luz, falado: "box do banheiro social", genero: m, apelidos: ["box banheiro social", "box social"] }
+  11: { tipo: luz, falado: "box do banheiro social", genero: m, apelidos: ["box banheiro social", "box social", "luz box banheiro social", "luz box social"] }
   # Sala de Jogos
   2:  { tipo: luz, falado: "spots da sala de jogos", genero: m, plural: true, apelidos: ["spots jogos", "spot jogos", "luz sala jogos", "luzes sala jogos"] }
   47: { tipo: persiana, falado: "persiana da sala de jogos", apelidos: ["persiana jogos", "persiana sala jogos"] }
@@ -47,15 +47,15 @@ devices:
   29: { tipo: luz, falado: "mesa inferior", apelidos: ["mesa inferior"] }
   30: { tipo: luz, falado: "mesa superior", apelidos: ["mesa superior"] }
   19: { tipo: luz, falado: "luz do banheiro do escritório", apelidos: ["luz banheiro escritorio", "luz central banheiro escritorio"] }
-  20: { tipo: luz, falado: "box do banheiro do escritório", genero: m, apelidos: ["box banheiro escritorio", "box escritorio"] }
-  21: { tipo: luz, falado: "espelho do banheiro do escritório", genero: m, apelidos: ["espelho banheiro escritorio", "espelho escritorio"] }
+  20: { tipo: luz, falado: "box do banheiro do escritório", genero: m, apelidos: ["box banheiro escritorio", "box escritorio", "luz box banheiro escritorio", "luz box escritorio"] }
+  21: { tipo: luz, falado: "espelho do banheiro do escritório", genero: m, apelidos: ["espelho banheiro escritorio", "espelho escritorio", "luz espelho banheiro escritorio", "luz espelho escritorio"] }
   45: { tipo: persiana, falado: "persiana do escritório", apelidos: ["persiana escritorio"] }
   # Suíte master (único quarto; "quarto" e "suíte" são sinônimos)
   33: { tipo: luz, falado: "luz do quarto", apelidos: ["luz quarto", "luz suite"] }
   34: { tipo: luz, falado: "spot do quarto", genero: m, apelidos: ["spot quarto", "spot suite"] }
   22: { tipo: luz, falado: "luz do banheiro da suíte", apelidos: ["luz banheiro suite", "luz banheiro quarto", "luz central banheiro suite"] }
-  23: { tipo: luz, falado: "espelho do banheiro da suíte", genero: m, apelidos: ["espelho banheiro suite", "espelho suite", "espelho quarto"] }
-  24: { tipo: luz, falado: "box do banheiro da suíte", genero: m, apelidos: ["box banheiro suite", "box suite", "box quarto"] }
+  23: { tipo: luz, falado: "espelho do banheiro da suíte", genero: m, apelidos: ["espelho banheiro suite", "espelho banheiro quarto", "espelho suite", "espelho quarto", "luz espelho banheiro suite", "luz espelho banheiro quarto", "luz espelho suite", "luz espelho quarto"] }
+  24: { tipo: luz, falado: "box do banheiro da suíte", genero: m, apelidos: ["box banheiro suite", "box banheiro quarto", "box suite", "box quarto", "luz box banheiro suite", "luz box banheiro quarto", "luz box suite", "luz box quarto"] }
   46: { tipo: persiana, falado: "persiana do quarto", apelidos: ["persiana quarto", "persiana suite"] }
 
 groups:

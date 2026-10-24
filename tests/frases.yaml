@@ -49,3 +49,10 @@
 - {frase: "bom dia", status: not_identified}
 - {frase: "acende a luz da sacadas", status: ok, acao: "on", alvo: 4}
 - {frase: "acende a luz da escada", status: not_identified}
+# Fase 7: "luz do box/espelho" caía na luz central do banheiro (o 22 ganhava pelo apelido "luz banheiro quarto")
+- {frase: "apagar a luz do box do banheiro do quarto", status: ok, acao: "off", alvo: 24}
+- {frase: "acende a luz do box do quarto", status: ok, acao: "on", alvo: 24}
+- {frase: "acende a luz do espelho do banheiro da suíte", status: ok, acao: "on", alvo: 23}
+- {frase: "acende a luz do box do banheiro social", status: ok, acao: "on", alvo: 11}
+- {frase: "acende a luz do espelho do banheiro do escritório", status: ok, acao: "on", alvo: 21}
+- {frase: "acende a luz do banheiro do quarto", status: ok, acao: "on", alvo: 22}
